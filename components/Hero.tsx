@@ -116,7 +116,6 @@ export default function Hero({ onViewProjects }: HeroProps) {
                 </a>
               </div>
             </div>
-            <div className="pointer-events-none absolute -bottom-4 -right-6 h-24 w-24 rounded-full bg-primary/40 blur-3xl opacity-60" />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { FaGithub, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { FiMail, FiLinkedin } from "react-icons/fi";
 
 type NavbarProps = {
@@ -63,6 +63,15 @@ export default function Navbar({
               aria-label="Instagram"
             >
               <FaInstagram className="w-6 h-6" />
+            </a>
+
+            {/* Whatsapp */}
+            <a
+              href="https://www.Whatsapp.me/+237683140781"
+              className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
+              aria-label="YouTube"
+            >
+              <FaWhatsapp className="w-6 h-6" />
             </a>
 
             {/* YouTube */}
