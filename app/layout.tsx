@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const githubUrl = "https://github.com/your-username";
-const linkedinUrl = "https://linkedin.com/in/your-username";
-const emailUrl = "mailto:you@example.com";
+const githubUrl = "https://github.com/guyasong2";
+const linkedinUrl = "https://www.linkedin.com/in/guy-asong-b8b1441b5/";
+const emailUrl = "mailto:guyasong1@gmail.com";
 
 export const metadata: Metadata = {
   title: "Guy Asong - Full-Stack Developer and an aspiring cybersecurity student",

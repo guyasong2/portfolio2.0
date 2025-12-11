@@ -58,7 +58,7 @@ export default function Navbar({
 
             {/* Instagram */}
             <a
-              href={emailUrl}
+              href="https://www.instagram.com/reconraven0x/"
               className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
               aria-label="Instagram"
             >
@@ -67,7 +67,7 @@ export default function Navbar({
 
             {/* YouTube */}
             <a
-              href={emailUrl}
+              href="https://www.youtube.com/@codeguru3204"
               className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
               aria-label="YouTube"
             >
