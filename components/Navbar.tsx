@@ -67,7 +67,7 @@ export default function Navbar({
 
             {/* Whatsapp */}
             <a
-              href="https://www.Whatsapp.me/+237683140781"
+              href="https://wa.me/+237683140781"
               className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
               aria-label="YouTube"
             >

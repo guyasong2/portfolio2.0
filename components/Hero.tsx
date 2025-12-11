@@ -15,7 +15,7 @@ import {
   SiVercel,
 } from "react-icons/si";
 import { RiShieldKeyholeLine, RiShieldCheckLine } from "react-icons/ri";
-import { TbApi } from "react-icons/tb";
+import { TbApi } from "react-icons/tb"
 
 type HeroProps = {
   onViewProjects: () => void;
@@ -116,7 +116,9 @@ export default function Hero({ onViewProjects }: HeroProps) {
                 </a>
               </div>
             </div>
-          </div>
+            <br />
+            <a href="/assets/Resume.pdf" className="border py-3 px-5 w-full" download>View Resume</a>
+          </div> 
         </div>
       </div>
     </section>
