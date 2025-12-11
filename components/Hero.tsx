@@ -117,7 +117,7 @@ export default function Hero({ onViewProjects }: HeroProps) {
               </div>
             </div>
             <br />
-            <a href="/assets/Guy Asong.pdf" className="border py-3 px-5 w-full" download>View Resume</a>
+            <a href="/assets/Guy Asong.pdf" aria-label="GUY Asong's Resume or CV" className="border py-3 px-5 w-full" download>View Resume</a>
           </div> 
         </div>
       </div>
