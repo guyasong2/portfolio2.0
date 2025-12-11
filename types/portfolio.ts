@@ -15,3 +15,14 @@ export type Project = {
   demoUrl: string;
   codeUrl: string;
 };
+
+// types/portfolio.ts
+
+export type Education = {
+  school: string;
+  degree: string;
+  field: string;
+  period: string;
+  location?: string;
+  bullets?: string[];
+};

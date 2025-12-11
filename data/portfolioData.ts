@@ -1,5 +1,5 @@
 // data/portfolioData.ts
-import type { Experience, Project } from "@/types/portfolio";
+import type { Experience, Project, Education } from "@/types/portfolio";
 
 export const experiences: Experience[] = [
   {
@@ -136,5 +136,32 @@ export const projects: Project[] = [
     tech: ["Tailwind CSS", "Django"],
     demoUrl: "https://github.com/guyasong2/odc_share",
     codeUrl: "https://github.com/guyasong2/odc_share",
+  },
+];
+
+
+
+export const education: Education[] = [
+  {
+    school: "Catholic University Institute of Buea",
+    degree: "Bachelor’s degree",
+    field: "Cybersecurity",
+    period: "Oct 2024 – Present",
+    location: "Buea, Cameroon",
+    bullets: [
+      "Studying core concepts in cybersecurity, networking, and secure software development.",
+      "Coursework including programming (C), operating systems, and information security.",
+    ],
+  },
+  {
+    school: "",
+    degree: "A-level",
+    field: "Arts",
+    period: "Sep 2023 – july 2024",
+    location: "Buea, Cameroon",
+    bullets: [
+      "Studying A4 which is Mathematics, English, Computer Science, Economics, Geography.",
+      "Graduated with a pass in 3 papers",
+    ],
   },
 ];

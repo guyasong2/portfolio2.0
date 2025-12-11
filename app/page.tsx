@@ -1,11 +1,11 @@
 // app/page.tsx
 "use client";
 
-
+import { education, experiences, projects  } from "@/data/portfolioData";
 import Hero from "@/components/Hero";
 import ExperienceSection from "@/components/ExperienceSection";
+import EducationSection from "@/components/EducationSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import { experiences, projects } from "@/data/portfolioData";
 
 export default function HomePage() {
   // 🔧 EDIT HERE: Social links
@@ -26,6 +26,7 @@ export default function HomePage() {
         <Hero onViewProjects={scrollToProjects} />
         <ExperienceSection experiences={experiences} />
         <ProjectsSection projects={projects} />
+        <EducationSection education={education} />
       </main>
     </div>
   );
