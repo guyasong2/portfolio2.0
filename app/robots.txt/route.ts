@@ -5,7 +5,7 @@ export function GET() {
 User-agent: *
 Allow: /
 
-Sitemap: https://guyasong.vercel.app/sitemap.xml
+Sitemap: https://guyasong.me/sitemap.xml
   `.trim();
 
   return new NextResponse(body, {
