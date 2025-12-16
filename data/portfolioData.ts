@@ -126,7 +126,7 @@ export const projects: Project[] = [
     description:
       "An AI powered music creation and generation app my team built for a 48 hours hackathon",
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Django Rest Framework"],
-    demoUrl: "https://github.com/TanellyAg/CamForgeX",
+    demoUrl: "https://camforgex-frontend.vercel.app/",
     codeUrl: "https://github.com/TanellyAg/CamForgeX",
   },
   {
