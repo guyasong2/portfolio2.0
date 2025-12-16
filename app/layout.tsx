@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/next"
 const inter = Inter({ subsets: ["latin"] });
 
 // TODO: change this to your real deployed URL when you have a custom domain
-const siteUrl = "https://your-domain.com";
+const siteUrl = "https://guyasong.me";
 
 const githubUrl = "https://github.com/guyasong2";
 const linkedinUrl = "https://www.linkedin.com/in/guy-asong-b8b1441b5/";
