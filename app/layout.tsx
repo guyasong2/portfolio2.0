@@ -1,14 +1,13 @@
-// app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
-// TODO: change this to your real deployed URL when you have a custom domain
 const siteUrl = "https://guyasong.me";
 
 const githubUrl = "https://github.com/guyasong2";
@@ -62,6 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <GoogleAnalytics gaId="G-PV4MBXKX0S" />
       <body
         className={`${inter.className} antialiased min-h-screen bg-base-100 text-base-content`}
       >
