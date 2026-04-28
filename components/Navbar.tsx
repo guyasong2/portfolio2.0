@@ -15,13 +15,17 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-50 border-b border-base-300/60 bg-base-100/80 backdrop-blur">
       <div className="flex justify-between py-3 px-5 items-center max-w-5xl mx-auto">
-        <div className="flex-1">
+        <div className="flex-1 flex gap-6 items-center">
           <a
-            href="#"
+            href="/"
             className="text-xl md:text-2xl font-semibold tracking-tight"
           >
             <span className="text-primary font-bold">Guy</span> Asong
           </a>
+          <nav className="hidden md:flex gap-4 text-lg font-medium">
+            <a href="/#projects" className="hover:text-primary transition">Projects</a>
+            <a href="/blog" className="hover:text-primary transition">Blog</a>
+          </nav>
         </div>
         <div className="flex-none gap-2">
           <div className="flex items-center gap-3.5">
@@ -54,24 +58,6 @@ export default function Navbar({
               aria-label="Email"
             >
               <FiMail className="w-6 h-6" />
-            </a>
-
-            {/* Instagram */}
-            <a
-              href="https://www.instagram.com/reconraven0x/"
-              className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
-              aria-label="Instagram"
-            >
-              <FaInstagram className="w-6 h-6" />
-            </a>
-
-            {/* Whatsapp */}
-            <a
-              href="https://wa.me/+237683140781"
-              className="btn btn-ghost btn-sm gap-2 hover:scale-105 transition"
-              aria-label="YouTube"
-            >
-              <FaWhatsapp className="w-6 h-6" />
             </a>
 
             {/* YouTube */}
