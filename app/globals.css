@@ -32,6 +32,12 @@
 
   body {
     @apply bg-white text-black antialiased;
+    overflow-x: hidden;
+  }
+
+  article {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   ::selection {

@@ -8,7 +8,7 @@ type PostCardProps = {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <article className="group border-2 border-black flex flex-col hover:bg-black hover:text-white transition-all duration-300">
+    <article className="group border-2 border-black flex flex-col hover:bg-black hover:text-white transition-all duration-300 bg-white">
       {post.cover_image && (
         <Link href={`/blog/${post.slug}`} className="relative w-full h-56 overflow-hidden block border-b-2 border-black">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -27,13 +27,13 @@ export default function PostCard({ post }: PostCardProps) {
         </Link>
       )}
 
-      <div className="flex flex-col flex-1 p-8 gap-6">
+      <div className="flex flex-col flex-1 p-4 sm:p-8 gap-4 sm:gap-6">
         <div className="space-y-4">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-50">
             {format(new Date(post.created_at), "MMM d, yyyy")}
           </div>
 
-          <h3 className="text-xl font-black leading-tight tracking-tight uppercase">
+          <h3 className="text-base sm:text-xl font-black leading-tight tracking-tight uppercase break-words">
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
 

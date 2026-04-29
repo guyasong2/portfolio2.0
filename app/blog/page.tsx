@@ -27,12 +27,12 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen">
       {/* Header — black */}
-      <div className="bg-black text-white py-32 px-8 lg:px-16">
+      <div className="bg-black text-white py-16 sm:py-24 md:py-32 px-4 sm:px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-12">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.3em] mb-6">Archive</p>
-              <h1 className="text-[clamp(3rem,7vw,7rem)] font-black tracking-[-0.04em] uppercase leading-none">
+              <p className="text-[11px] font-bold uppercase tracking-[0.3em] mb-4 sm:mb-6">Archive</p>
+              <h1 className="text-[clamp(2.5rem,7vw,7rem)] font-black tracking-[-0.04em] uppercase leading-none">
                 Blog
               </h1>
             </div>
@@ -47,14 +47,14 @@ export default async function BlogPage() {
       </div>
 
       {/* Content — white */}
-      <div className="max-w-[1400px] mx-auto px-8 lg:px-16 py-24 space-y-24">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-24 space-y-16 sm:space-y-24">
         {featuredPosts.length > 0 && (
           <section>
             <div className="flex items-end gap-8 mb-12">
               <h2 className="text-2xl font-black uppercase tracking-tight">Featured</h2>
               <div className="h-[2px] flex-1 bg-black" />
             </div>
-            <div className="grid md:grid-cols-2 gap-0">
+            <div className="grid md:grid-cols-2 gap-6">
               {featuredPosts.map((post: any) => (
                 <PostCard key={post.id} post={post} />
               ))}
@@ -73,7 +73,7 @@ export default async function BlogPage() {
               <p className="text-[11px] font-bold uppercase tracking-[0.3em]">No posts published yet.</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-black">
               {regularPosts.map((post: any) => (
                 <PostCard key={post.id} post={post} />
               ))}

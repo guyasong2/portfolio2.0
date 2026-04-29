@@ -96,13 +96,13 @@ export default async function BlogPostPage({ params }: Props) {
       <SEO post={post as any} siteUrl="https://guyasong.me" />
 
       {/* Header — black band */}
-      <div className="bg-black text-white py-24 px-8 lg:px-16">
+      <div className="bg-black text-white py-16 sm:py-24 px-4 sm:px-8 lg:px-16">
         <div className="max-w-[1400px] mx-auto">
-          <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] hover:line-through transition-all mb-12 inline-block">
+          <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] hover:line-through transition-all mb-8 sm:mb-12 inline-block">
             ← Back
           </Link>
 
-          <div className="flex items-center gap-6 mb-8 text-[10px] font-bold uppercase tracking-[0.2em]">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-6 mb-6 sm:mb-8 text-[10px] font-bold uppercase tracking-[0.2em]">
             {(post.categories as any)?.name && (
               <span className="border-2 border-white px-3 py-1">
                 {(post.categories as any).name}
@@ -112,12 +112,12 @@ export default async function BlogPostPage({ params }: Props) {
             <span>{readingTime} min read</span>
           </div>
 
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.05] max-w-4xl uppercase">
+          <h1 className="text-[clamp(1.75rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.05] max-w-4xl uppercase break-words">
             {post.title}
           </h1>
 
-          <div className="flex items-center gap-4 mt-10">
-            <div className="w-10 h-10 border-2 border-white overflow-hidden">
+          <div className="flex items-center gap-4 mt-8 sm:mt-10">
+            <div className="w-10 h-10 border-2 border-white overflow-hidden flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={(post.profiles as any)?.avatar || "https://ui-avatars.com/api/?name=Guy+Asong&background=000&color=fff"} alt="Author" className="w-full h-full object-cover" />
             </div>
@@ -129,15 +129,15 @@ export default async function BlogPostPage({ params }: Props) {
       </div>
 
       {/* Content */}
-      <article className="max-w-[1400px] mx-auto px-8 lg:px-16 py-24">
+      <article className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-24 overflow-hidden">
         {post.cover_image && (
-          <div className="w-full aspect-[21/9] overflow-hidden border-2 border-black mb-20">
+          <div className="w-full aspect-[21/9] overflow-hidden border-2 border-black mb-12 sm:mb-20">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={post.cover_image} alt={post.title} className="w-full h-full object-cover" />
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-20">
+        <div className="flex flex-col lg:flex-row gap-10 sm:gap-16 lg:gap-20">
           {/* TOC sidebar */}
           {headings.length > 0 && (
             <aside className="hidden lg:block w-56 shrink-0">
@@ -158,11 +158,11 @@ export default async function BlogPostPage({ params }: Props) {
             </aside>
           )}
 
-          <div className="flex-1 max-w-3xl">
+          <div className="flex-1 min-w-0 max-w-3xl">
             <BlockRenderer blocks={blocks} />
 
             {/* Author box */}
-            <div className="mt-24 border-2 border-black p-10 flex flex-col md:flex-row gap-8 items-start">
+            <div className="mt-16 sm:mt-24 border-2 border-black p-6 sm:p-10 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
               <div className="w-20 h-20 border-2 border-black flex-shrink-0 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={(post.profiles as any)?.avatar || "https://ui-avatars.com/api/?name=Guy+Asong&background=000&color=fff"} alt="Author" className="w-full h-full object-cover" />
@@ -183,9 +183,9 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Related */}
         {relatedPosts && relatedPosts.length > 0 && (
-          <div className="mt-24 pt-24 border-t-2 border-black">
-            <h2 className="text-2xl font-black uppercase tracking-tight mb-12">Related</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
+          <div className="mt-16 sm:mt-24 pt-16 sm:pt-24 border-t-2 border-black">
+            <h2 className="text-2xl font-black uppercase tracking-tight mb-8 sm:mb-12">Related</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-black">
               {relatedPosts.map((rp) => (
                 <PostCard key={rp.id} post={rp as any} />
               ))}
