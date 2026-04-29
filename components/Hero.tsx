@@ -1,125 +1,90 @@
-// components/Hero.tsx
-import {
-  SiNextdotjs,
-  SiReact,
-  SiJavascript,
-  SiTypescript,
-  SiTailwindcss,
-  SiDjango,
-  SiPython,
-  SiGit,
-  SiGithub,
-  SiDocker,
-  SiLinux,
-  SiOwasp,
-  SiVercel,
-} from "react-icons/si";
-import { RiShieldKeyholeLine, RiShieldCheckLine } from "react-icons/ri";
-import { TbApi } from "react-icons/tb"
+"use client";
 
-type HeroProps = {
-  onViewProjects: () => void;
-};
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import Image from "next/image";
+import { FaArrowDown } from "react-icons/fa";
 
-const stackItems = [
-  { label: "Next.js", Icon: SiNextdotjs },
-  { label: "React", Icon: SiReact },
-  { label: "JavaScript", Icon: SiJavascript },
-  { label: "TypeScript", Icon: SiTypescript },
-  { label: "Tailwind", Icon: SiTailwindcss },
-  { label: "Django", Icon: SiDjango },
-  { label: "Django REST Framework", Icon: TbApi },
-  { label: "Python", Icon: SiPython },
-  { label: "Cybersecurity", Icon: RiShieldKeyholeLine },
-  { label: "Secure Coding", Icon: RiShieldCheckLine },
-  { label: "OWASP Top 10", Icon: SiOwasp },
-  { label: "Git", Icon: SiGit },
-  { label: "GitHub", Icon: SiGithub },
-  { label: "Docker", Icon: SiDocker },
-  { label: "Linux", Icon: SiLinux },
-  { label: "Vercel", Icon: SiVercel },
-];
+export default function Hero() {
+  const container = useRef<HTMLDivElement>(null);
 
-export default function Hero({ onViewProjects }: HeroProps) {
+  const handleViewProjects = () => {
+    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useGSAP(() => {
+    const tl = gsap.timeline();
+
+    tl.fromTo(".hero-line-1", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power4.out" })
+      .fromTo(".hero-line-2", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power4.out" }, "-=0.7")
+      .fromTo(".hero-line-3", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power4.out" }, "-=0.7")
+      .fromTo(".hero-meta", { opacity: 0 }, { opacity: 1, duration: 0.8 }, "-=0.4")
+      .fromTo(".hero-image", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" }, "-=0.8")
+      .fromTo(".hero-scroll", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6 }, "-=0.3");
+
+    // Subtle float for image
+    gsap.to(".hero-image", {
+      y: -12,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+  }, { scope: container });
+
   return (
-    <section className="pt-10 md:pt-16">
-      <div
-        className="
-          hero
-          rounded-2xl
-          border border-base-300/60
-          shadow-xl overflow-hidden
-          p-6 md:p-10 
-        "
-      >
-        <div
-          className="
-            hero-content
-            w-full
-            flex flex-col md:flex-row
-            items-start
-            justify-between
-            gap-8 md:gap-12
-          "
-        >
-          {/* Left: text */}
-          <div className="space-y-5 max-w-xl md:max-w-2xl flex-1">
-            <p className="uppercase tracking-[0.2em] text-xs text-primary/80 font-bold">
-              Full-Stack Developer · Cybersecurity
-            </p>
-            <h1 className="text-3xl md:text-4xl font-bold leading-tight">
-              I build and secure modern web applications from idea to production.
+    <section ref={container} className="min-h-[90vh] flex flex-col justify-center bg-black text-white py-16 md:py-24 px-6 md:px-8 lg:px-16 relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto w-full flex flex-col-reverse lg:flex-row items-center gap-12 md:gap-16 lg:gap-24">
+
+        {/* Text */}
+        <div className="flex-1 space-y-6 md:space-y-10 text-center lg:text-left">
+          <div className="overflow-hidden">
+            <h1 className="hero-line-1 text-[clamp(3rem,12vw,8rem)] font-black leading-[0.85] tracking-[-0.04em] uppercase">
+              GUY ASONG
             </h1>
-            <p className="text-sm md:text-base text-base-content/80">
-              I’m <span className="font-medium">Guy Asong</span>, a full‑stack developer and
-              cybersecurity practitioner. I work with{" "}
-              <span className="font-medium">
-                Next.js, React, TypeScript, Tailwind CSS, Django, Django REST Framework, and Python
-              </span>
-              , and I apply secure‑by‑design principles and app‑sec practices to keep systems safe.
-              I deploy applications with <span className="font-medium">Vercel</span> and{" "}
-              <span className="font-medium">PythonAnywhere</span>, delivering production‑ready,
-              secure solutions for companies and clients.
+          </div>
+          <div className="overflow-hidden">
+            <p className="hero-line-3 text-[clamp(0.85rem,2.5vw,1.5rem)] font-bold uppercase tracking-[0.15em]">
+              Full-Stack Developer<br />
+              & Aspiring Cybersecurity Analyst
             </p>
           </div>
 
-          {/* Right: stack & tools card */}
-          <div className="relative w-full md:w-96 lg:w-96 shrink-0">
-            <div className="relative h-60 md:h-64 rounded-3xl border border-base-300/60 flex flex-col justify-between p-3 md:p-5 shadow-lg">
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-base-content/60 mb-2">
-                  Stack and tools
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {stackItems.map(({ label, Icon }) => (
-                    <span
-                      key={label}
-                      className="badge badge-sm border-primary/40 bg-base-100/70 text-xs inline-flex items-center gap-1.5"
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                      <span>{label}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-end justify-between pt-3">
-                <div>
-                  <p className="text-xs text-base-content/60">Available for</p>
-                  <p className="font-semibold text-sm">Full‑time & Freelance</p>
-                </div>
-                <a
-                  href="mailto:guyasong1@gmail.com"
-                  className="bg-black rounded-lg text-white py-2 px-2 text-center text-sm"
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-            <br />
-            <a href="https://drive.google.com/file/d/1tYqOTggMNM1JLh2GaLayv8PL8F-crjkF/view?usp=drive_link" aria-label="GUY Asong's Resume or CV" className="border py-3 px-5 w-full" download>View Resume</a>
-          </div> 
+          <div className="hero-meta flex flex-col sm:flex-row gap-4 md:gap-8 pt-6 md:pt-8 justify-center lg:justify-start">
+            <button
+              onClick={handleViewProjects}
+              className="bg-white text-black font-black uppercase tracking-[0.2em] text-[11px] px-8 md:px-10 py-4 md:py-5 border-2 border-white hover:bg-black hover:text-white transition-all"
+            >
+              View Work
+            </button>
+            <a
+              href="https://drive.google.com/file/d/1tYqOTggMNM1JLh2GaLayv8PL8F-crjkF/view?usp=drive_link"
+              target="_blank"
+              rel="noreferrer"
+              className="border-2 border-white font-black uppercase tracking-[0.2em] text-[11px] px-8 md:px-10 py-4 md:py-5 hover:bg-white hover:text-black transition-all text-center"
+            >
+              Download CV
+            </a>
+          </div>
         </div>
+
+        {/* Portrait */}
+        <div className="hero-image w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] lg:w-[460px] lg:h-[460px] relative overflow-hidden rounded-full flex-shrink-0">
+          <Image
+            src="/bg.png"
+            alt="Guy Asong"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="hero-scroll absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span className="text-[9px] font-bold uppercase tracking-[0.4em]">Scroll</span>
+        <FaArrowDown className="text-xs animate-bounce" />
       </div>
     </section>
   );

@@ -49,7 +49,6 @@ export default function PostEditor({ initialPost, categories, onSubmitAction }: 
   const onSubmit = async (data: PostFormData) => {
     setIsSubmitting(true);
     setError("");
-    
     try {
       const result = await onSubmitAction(data, blocks);
       if (result.error) {
@@ -66,52 +65,45 @@ export default function PostEditor({ initialPost, categories, onSubmitAction }: 
   };
 
   const handleSlugify = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)+/g, "");
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 pb-20">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-16 pb-32">
       {error && (
-        <div className="alert alert-error">
-          <span>{error}</span>
+        <div className="bg-black text-white p-6 border-2 border-black text-[11px] font-black uppercase tracking-[0.2em]">
+          Error: {error}
         </div>
       )}
 
-      {/* Top Bar Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-base-100 p-4 rounded-lg border border-base-300 sticky top-0 z-10 shadow-sm">
-        <h1 className="text-xl font-bold">{initialPost ? "Edit Post" : "Create New Post"}</h1>
-        <div className="flex gap-2">
+      {/* Top Bar */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 md:gap-8 bg-white p-4 md:p-8 lg:p-10 border-2 border-black sticky top-0 lg:top-0 z-10">
+        <div>
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">{initialPost ? "Edit Post" : "New Post"}</h1>
+        </div>
+        <div className="flex gap-4">
           <Controller
             control={control}
             name="published"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <button
                 type="button"
-                className={`btn btn-sm ${!value ? "btn-neutral" : "btn-outline"}`}
-                onClick={() => {
-                  onChange(false);
-                  handleSubmit(onSubmit)();
-                }}
+                className="border-2 border-black text-xs md:text-sm font-black uppercase tracking-[0.15em] px-4 md:px-8 py-3 md:py-4 hover:bg-black hover:text-white transition-all flex items-center gap-2 md:gap-3"
+                onClick={() => { onChange(false); handleSubmit(onSubmit)(); }}
                 disabled={isSubmitting}
               >
-                <FaSave /> Save Draft
+                <FaSave /> Draft
               </button>
             )}
           />
           <Controller
             control={control}
             name="published"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <button
                 type="button"
-                className={`btn btn-sm ${value ? "btn-primary" : "btn-outline btn-primary"}`}
-                onClick={() => {
-                  onChange(true);
-                  handleSubmit(onSubmit)();
-                }}
+                className="bg-black text-white border-2 border-black text-xs md:text-sm font-black uppercase tracking-[0.15em] px-4 md:px-8 py-3 md:py-4 hover:bg-white hover:text-black transition-all flex items-center gap-2 md:gap-3"
+                onClick={() => { onChange(true); handleSubmit(onSubmit)(); }}
                 disabled={isSubmitting}
               >
                 <FaPaperPlane /> Publish
@@ -121,75 +113,64 @@ export default function PostEditor({ initialPost, categories, onSubmitAction }: 
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Main Content Area */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-base-100 p-6 rounded-lg border border-base-300 space-y-4">
-            <h2 className="text-lg font-bold mb-4">Post Content</h2>
-            
-            <div className="form-control w-full">
-              <label className="label"><span className="label-text">Title</span></label>
-              <input 
-                type="text" 
-                className="input input-bordered w-full text-lg font-bold" 
-                {...register("title", {
-                  onChange: (e) => {
-                    if (!initialPost) {
-                      // Auto-generate slug on new post
-                      const slugInput = document.querySelector('input[name="slug"]') as HTMLInputElement;
-                      if (slugInput) {
-                        slugInput.value = handleSlugify(e.target.value);
-                      }
-                    }
+      <div className="grid lg:grid-cols-3 gap-0">
+        {/* Main */}
+        <div className="lg:col-span-2 border-2 border-black p-4 md:p-8 lg:p-12 space-y-6 md:space-y-10">
+          <div className="space-y-3">
+            <label className="text-base font-black uppercase tracking-[0.3em] block">Title</label>
+            <input
+              type="text"
+              className="w-full bg-white border-2 border-black text-xl md:text-3xl lg:text-4xl font-black uppercase tracking-tight h-16 md:h-20 lg:h-24 px-4 md:px-8 focus:outline-none"
+              placeholder="POST TITLE"
+              {...register("title", {
+                onChange: (e) => {
+                  if (!initialPost) {
+                    const slugInput = document.querySelector('input[name="slug"]') as HTMLInputElement;
+                    if (slugInput) slugInput.value = handleSlugify(e.target.value);
                   }
-                })}
-              />
-              {errors.title && <span className="text-error text-sm mt-1">{errors.title.message}</span>}
-            </div>
-
-            <BlockEditor initialBlocks={blocks} onChange={setBlocks} />
+                }
+              })}
+            />
+            {errors.title && <span className="text-[10px] font-black uppercase">{errors.title.message}</span>}
           </div>
+
+          <BlockEditor initialBlocks={blocks} onChange={setBlocks} />
         </div>
 
-        {/* Sidebar Metadata */}
-        <div className="space-y-6">
-          <div className="bg-base-100 p-6 rounded-lg border border-base-300 space-y-4">
-            <h2 className="text-lg font-bold mb-4">Settings</h2>
+        {/* Sidebar */}
+        <div className="border-2 border-black lg:border-l-0 p-6 md:p-10 space-y-10">
+          <h2 className="text-xl font-black uppercase tracking-[0.2em] border-b-2 border-black pb-4">Settings</h2>
 
-            <div className="form-control w-full">
-              <label className="label"><span className="label-text">Slug</span></label>
-              <input type="text" className="input input-bordered w-full input-sm" {...register("slug")} />
-              {errors.slug && <span className="text-error text-sm mt-1">{errors.slug.message}</span>}
-            </div>
-
-            <div className="form-control w-full">
-              <label className="label"><span className="label-text">Category</span></label>
-              <select className="select select-bordered w-full select-sm" {...register("category_id")}>
-                <option value="">None</option>
-                {categories.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-control w-full">
-              <label className="label"><span className="label-text">Cover Image URL</span></label>
-              <input type="url" className="input input-bordered w-full input-sm" {...register("cover_image")} />
-              {errors.cover_image && <span className="text-error text-sm mt-1">{errors.cover_image.message}</span>}
-            </div>
-
-            <div className="form-control w-full">
-              <label className="label"><span className="label-text">Excerpt</span></label>
-              <textarea className="textarea textarea-bordered h-24" {...register("excerpt")}></textarea>
-            </div>
-
-            <div className="form-control">
-              <label className="label cursor-pointer justify-start gap-4">
-                <input type="checkbox" className="checkbox checkbox-primary" {...register("featured")} />
-                <span className="label-text">Feature this post</span> 
-              </label>
-            </div>
+          <div className="space-y-3">
+            <label className="text-sm font-black uppercase tracking-[0.3em]">Slug</label>
+            <input type="text" className="w-full bg-white border-2 border-black px-6 py-4 text-sm font-bold focus:outline-none" {...register("slug")} />
+            {errors.slug && <span className="text-sm font-black uppercase">{errors.slug.message}</span>}
           </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-black uppercase tracking-[0.3em]">Category</label>
+            <select className="w-full bg-white border-2 border-black px-6 py-4 text-sm font-bold focus:outline-none appearance-none" {...register("category_id")}>
+              <option value="">NONE</option>
+              {categories.map(c => (
+                <option key={c.id} value={c.id}>{c.name.toUpperCase()}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-black uppercase tracking-[0.3em]">Cover Image URL</label>
+            <input type="url" className="w-full bg-white border-2 border-black px-6 py-4 text-sm font-bold focus:outline-none" {...register("cover_image")} />
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-black uppercase tracking-[0.3em]">Excerpt</label>
+            <textarea className="w-full h-40 bg-white border-2 border-black px-6 py-4 text-sm font-bold leading-relaxed focus:outline-none resize-none" {...register("excerpt")} />
+          </div>
+
+          <label className="flex items-center gap-5 cursor-pointer group">
+            <input type="checkbox" className="w-6 h-6 border-2 border-black appearance-none checked:bg-black cursor-pointer" {...register("featured")} />
+            <span className="text-sm font-black uppercase tracking-[0.2em] group-hover:line-through transition-all">Featured</span>
+          </label>
         </div>
       </div>
     </form>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from "@vercel/analytics/next"
 
@@ -16,30 +17,29 @@ const emailUrl = "mailto:guyasong1@gmail.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title:
-    "Guy Asong | Full‑Stack Developer & Cybersecurity Practitioner",
+  title: {
+    default: "Guy Asong | Cybersecurity Analyst & Developer",
+    template: "%s | Guy Asong"
+  },
   description:
-    "Portfolio of Guy Asong, a full‑stack developer and aspiring cybersecurity professional building secure web applications with Next.js, React, TypeScript, Tailwind CSS, Django, Django REST Framework, and Python.",
+    "Professional portfolio of Guy Asong, a cybersecurity practitioner and full-stack developer specializing in secure web applications.",
   keywords: [
     "Guy Asong",
-    "full stack developer",
-    "Next.js developer",
-    "Django developer",
-    "Django REST Framework",
-    "TypeScript",
-    "Python",
-    "Tailwind CSS",
     "cybersecurity",
-    "Cameroon",
-    "Buea",
+    "penetration testing",
+    "full stack developer",
+    "Next.js",
+    "secure coding",
+    "Django",
+    "Python",
   ],
   authors: [{ name: "Guy Asong", url: siteUrl }],
   openGraph: {
-    title: "Guy Asong | Full‑Stack Developer & Cybersecurity",
+    title: "Guy Asong | Cybersecurity Analyst & Developer",
     description:
-      "Full‑stack developer and cybersecurity practitioner building and securing modern web applications with Next.js, React, TypeScript, Django & Python.",
+      "Cybersecurity practitioner building and securing modern web applications.",
     url: siteUrl,
-    siteName: "Guy Asong Portfolio",
+    siteName: "Guy Asong",
     type: "website",
     locale: "en_US",
   },
@@ -48,9 +48,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Guy Asong | Full‑Stack Developer & Cybersecurity",
+    title: "Guy Asong | Cybersecurity Analyst & Developer",
     description:
-      "Portfolio of Guy Asong, full‑stack developer and cybersecurity practitioner working with Next.js, React, TypeScript, Django & Python.",
+      "Cybersecurity practitioner building and securing modern web applications.",
   },
 };
 
@@ -63,19 +63,19 @@ export default function RootLayout({
     <html lang="en">
       <GoogleAnalytics gaId="G-PV4MBXKX0S" />
       <body
-        className={`${inter.className} antialiased min-h-screen bg-base-100 text-base-content`}
+        className={`${inter.className} antialiased min-h-screen bg-white text-black`}
       >
+        <ReadingProgressBar />
         <Navbar
           githubUrl={githubUrl}
           linkedinUrl={linkedinUrl}
           emailUrl={emailUrl}
         />
 
-        {/* Main page content in a centered container */}
-        <main className="max-w-5xl mx-auto px-4 pb-16 space-y-20 md:space-y-24">
+        <main className="w-full">
           {children}
-          <Footer />
         </main>
+        <Footer />
         <Analytics />
       </body>
     </html>

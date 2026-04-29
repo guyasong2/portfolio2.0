@@ -28,7 +28,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="w-full">
       <PostEditor 
         initialPost={post}
         categories={categoriesResponse.data || []} 

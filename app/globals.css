@@ -1,21 +1,57 @@
 @import "tailwindcss";
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
 
-@layer utilities {
-  .animation-delay-2000 {
-    animation-delay: 2s;
+@theme {
+  --color-primary: #000000;
+  --color-secondary: #000000;
+  --color-accent: #000000;
+  --font-heading: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  :root {
+    --p: 0 0% 0%;
+    --pc: 0 0% 100%;
+    --s: 0 0% 0%;
+    --sc: 0 0% 100%;
+    --a: 0 0% 0%;
+    --ac: 0 0% 100%;
+    --n: 0 0% 0%;
+    --nc: 0 0% 100%;
+    --b1: 0 0% 100%;
+    --b2: 0 0% 100%;
+    --b3: 0 0% 100%;
+    --bc: 0 0% 0%;
   }
-  .animation-delay-4000 {
-    animation-delay: 4s;
+
+  * {
+    border-radius: 0 !important;
+  }
+
+  body {
+    @apply bg-white text-black antialiased;
+  }
+
+  ::selection {
+    background: #000;
+    color: #fff;
   }
 }
 
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+/* Force zero border-radius on everything */
+*, *::before, *::after {
+  border-radius: 0 !important;
 }
 
-.animate-blob {
-  animation: blob 7s infinite;
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+::-webkit-scrollbar-thumb {
+  background: #000;
 }

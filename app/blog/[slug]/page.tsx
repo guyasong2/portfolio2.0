@@ -2,7 +2,10 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import BlockRenderer from "@/components/blog/BlockRenderer";
+import SEO from "@/components/blog/SEO";
 import type { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
+import PostCard from "@/components/blog/PostCard";
 
 export const revalidate = 60;
 
@@ -26,8 +29,8 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${post.title} | Guy Asong Blog`,
-    description: post.excerpt || `Read ${post.title} by Guy Asong`,
+    title: post.title,
+    description: post.excerpt || `Read ${post.title}`,
     openGraph: {
       title: post.title,
       description: post.excerpt || "",
@@ -42,16 +45,13 @@ export async function generateMetadata(
       description: post.excerpt || "",
       images: post.cover_image ? [post.cover_image] : previousImages,
     },
-    alternates: {
-      canonical: `https://guyasong.me/blog/${post.slug}`,
-    },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
-  
+
   const supabase = await createClient();
 
   const { data: post, error } = await supabase
@@ -59,7 +59,7 @@ export default async function BlogPostPage({ params }: Props) {
     .select(`
       *,
       profiles(name, avatar),
-      categories(name),
+      categories(id, name),
       blocks:post_blocks(*)
     `)
     .eq("slug", slug)
@@ -69,10 +69,16 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  // Sort blocks
+  const { data: relatedPosts } = await supabase
+    .from("posts")
+    .select(`*, categories(name)`)
+    .eq("published", true)
+    .eq("category_id", post.category_id)
+    .neq("id", post.id)
+    .limit(3);
+
   const blocks = post.blocks?.sort((a: any, b: any) => a.position - b.position) || [];
-  
-  // Extract Headings for TOC
+
   const headings = blocks
     .filter((b: any) => b.block_type === "heading")
     .map((b: any) => ({
@@ -80,88 +86,113 @@ export default async function BlogPostPage({ params }: Props) {
       id: b.block_content.text.toLowerCase().replace(/[^\w]+/g, '-'),
     }));
 
+  const wordCount = blocks.reduce((acc: number, b: any) => {
+    return acc + (b.block_content.text?.split(/\s+/).length || 0);
+  }, 0);
+  const readingTime = Math.max(1, Math.ceil(wordCount / 225));
+
   return (
-    <article className="max-w-4xl mx-auto pb-16">
-      <header className="space-y-6 text-center pt-8 pb-12">
-        <div className="flex items-center justify-center gap-2 mb-6">
-          {(post.categories as any)?.name && (
-            <span className="badge badge-primary badge-outline font-semibold">
-              {(post.categories as any).name}
-            </span>
-          )}
-          <span className="text-sm font-medium text-base-content/60">
-            {format(new Date(post.created_at), "MMMM d, yyyy")}
-          </span>
-          <span className="text-sm font-medium text-base-content/60">&bull;</span>
-          <span className="text-sm font-medium text-base-content/60">
-            {post.read_time || Math.ceil(blocks.length / 3)} min read
-          </span>
-        </div>
+    <div className="min-h-screen">
+      <SEO post={post as any} siteUrl="https://guyasong.me" />
 
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-          {post.title}
-        </h1>
+      {/* Header — black band */}
+      <div className="bg-black text-white py-24 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] hover:line-through transition-all mb-12 inline-block">
+            ← Back
+          </Link>
 
-        {post.excerpt && (
-          <p className="text-lg md:text-xl text-base-content/70 max-w-2xl mx-auto">
-            {post.excerpt}
-          </p>
-        )}
+          <div className="flex items-center gap-6 mb-8 text-[10px] font-bold uppercase tracking-[0.2em]">
+            {(post.categories as any)?.name && (
+              <span className="border-2 border-white px-3 py-1">
+                {(post.categories as any).name}
+              </span>
+            )}
+            <span>{format(new Date(post.created_at), "MMMM d, yyyy")}</span>
+            <span>{readingTime} min read</span>
+          </div>
 
-        <div className="flex items-center justify-center gap-3 pt-6">
-          <div className="avatar">
-            <div className="w-10 h-10 rounded-full bg-primary/20 p-0.5">
+          <h1 className="text-[clamp(2rem,5vw,4.5rem)] font-black tracking-[-0.03em] leading-[1.05] max-w-4xl uppercase">
+            {post.title}
+          </h1>
+
+          <div className="flex items-center gap-4 mt-10">
+            <div className="w-10 h-10 border-2 border-white overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={(post.profiles as any)?.avatar || "https://ui-avatars.com/api/?name=Guy+Asong&background=random"} alt="Author" className="rounded-full" />
+              <img src={(post.profiles as any)?.avatar || "https://ui-avatars.com/api/?name=Guy+Asong&background=000&color=fff"} alt="Author" className="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p className="text-sm font-black">{(post.profiles as any)?.name || "Guy Asong"}</p>
             </div>
           </div>
-          <div className="text-left">
-            <p className="text-sm font-bold">{(post.profiles as any)?.name || "Guy Asong"}</p>
-            <p className="text-xs text-base-content/60">Author</p>
-          </div>
-        </div>
-      </header>
-
-      {post.cover_image && (
-        <div className="w-full aspect-video md:aspect-[21/9] rounded-xl overflow-hidden shadow-2xl mb-16 bg-base-300">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            src={post.cover_image} 
-            alt={post.title} 
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Table of Contents (Desktop Sidebar) */}
-        {headings.length > 0 && (
-          <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-24">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-base-content/50 mb-4">
-                Table of Contents
-              </h3>
-              <ul className="space-y-2 text-sm">
-                {headings.map((h: any, i: number) => (
-                  <li key={i}>
-                    <a 
-                      href={`#${h.id}`} 
-                      className="text-base-content/70 hover:text-primary transition-colors block py-1"
-                    >
-                      {h.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-        )}
-
-        {/* Main Content */}
-        <div className="flex-1 min-w-0">
-          <BlockRenderer blocks={blocks} />
         </div>
       </div>
-    </article>
+
+      {/* Content */}
+      <article className="max-w-[1400px] mx-auto px-8 lg:px-16 py-24">
+        {post.cover_image && (
+          <div className="w-full aspect-[21/9] overflow-hidden border-2 border-black mb-20">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={post.cover_image} alt={post.title} className="w-full h-full object-cover" />
+          </div>
+        )}
+
+        <div className="flex flex-col lg:flex-row gap-20">
+          {/* TOC sidebar */}
+          {headings.length > 0 && (
+            <aside className="hidden lg:block w-56 shrink-0">
+              <div className="sticky top-24">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-6 border-b-2 border-black pb-3">
+                  Contents
+                </p>
+                <ul className="space-y-4">
+                  {headings.map((h: any, i: number) => (
+                    <li key={i}>
+                      <a href={`#${h.id}`} className="text-[11px] font-bold uppercase tracking-[0.15em] hover:line-through transition-all block">
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+          )}
+
+          <div className="flex-1 max-w-3xl">
+            <BlockRenderer blocks={blocks} />
+
+            {/* Author box */}
+            <div className="mt-24 border-2 border-black p-10 flex flex-col md:flex-row gap-8 items-start">
+              <div className="w-20 h-20 border-2 border-black flex-shrink-0 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={(post.profiles as any)?.avatar || "https://ui-avatars.com/api/?name=Guy+Asong&background=000&color=fff"} alt="Author" className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black uppercase tracking-tight">{(post.profiles as any)?.name || "Guy Asong"}</h3>
+                <p className="text-sm leading-relaxed mt-3 max-w-md">
+                  Full-stack developer and security architect building secure web applications.
+                </p>
+                <div className="flex gap-6 mt-4">
+                  <Link href="/" className="text-[10px] font-black uppercase tracking-[0.2em] underline underline-offset-4 decoration-2 hover:no-underline">Portfolio</Link>
+                  <a href="https://github.com/guyasong2" className="text-[10px] font-black uppercase tracking-[0.2em] underline underline-offset-4 decoration-2 hover:no-underline">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Related */}
+        {relatedPosts && relatedPosts.length > 0 && (
+          <div className="mt-24 pt-24 border-t-2 border-black">
+            <h2 className="text-2xl font-black uppercase tracking-tight mb-12">Related</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
+              {relatedPosts.map((rp) => (
+                <PostCard key={rp.id} post={rp as any} />
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
   );
 }

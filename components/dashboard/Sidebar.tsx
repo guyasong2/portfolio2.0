@@ -1,72 +1,127 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaPen, FaTags, FaFolder, FaSignOutAlt, FaChartBar, FaCog } from "react-icons/fa";
-import clsx from "clsx";
+import { FaHome, FaPen, FaTags, FaChartBar, FaExternalLinkAlt, FaSignOutAlt, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 
-export default function Sidebar() {
+type SidebarProps = {
+  userEmail: string;
+};
+
+export default function Sidebar({ userEmail }: SidebarProps) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { name: "Overview", href: "/dashboard", icon: FaHome },
-    { name: "Posts", href: "/dashboard/posts", icon: FaPen },
-    { name: "Categories", href: "/dashboard/categories", icon: FaFolder },
-    { name: "Tags", href: "/dashboard/tags", icon: FaTags },
+    { name: "Publications", href: "/dashboard/posts", icon: FaPen },
+    { name: "Projects", href: "/dashboard/projects", icon: FaChartBar },
+    { name: "Categories", href: "/dashboard/tech-categories", icon: FaTags },
   ];
 
+  const handleNavClick = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <div className="drawer-side z-40">
-      <label htmlFor="dashboard-drawer" aria-label="close sidebar" className="drawer-overlay"></label> 
-      <ul className="menu p-4 w-72 min-h-full bg-base-100 text-base-content border-r border-base-300 justify-between shadow-2xl">
-        <div>
-          <li className="mb-8">
-            <Link href="/dashboard" className="text-2xl font-black tracking-tighter p-2 hover:bg-transparent cursor-default">
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Guy</span> Admin
-            </Link>
-          </li>
-          
-          <li className="menu-title text-xs font-bold uppercase tracking-widest text-base-content/40 mb-2">Content</li>
-          
-          <div className="space-y-1">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href));
-              const Icon = link.icon;
-              return (
-                <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className={clsx(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200",
-                      isActive 
-                        ? "bg-primary text-primary-content shadow-md shadow-primary/20 hover:bg-primary/90 hover:text-primary-content" 
-                        : "hover:bg-base-200 text-base-content/70 hover:text-base-content"
-                    )}
-                  >
-                    <Icon className={clsx("w-5 h-5", isActive ? "text-primary-content" : "text-base-content/50")} />
-                    {link.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </div>
+    <>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black text-white h-14 flex items-center justify-between px-6 border-b-2 border-black">
+        <Link href="/dashboard" className="text-sm font-black uppercase tracking-[0.2em] flex items-center gap-3">
+          <div className="w-7 h-7 bg-white text-black flex items-center justify-center text-xs font-black">G</div>
+          Admin
+        </Link>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-10 h-10 flex items-center justify-center"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:sticky top-0 left-0 z-50 
+        w-64 bg-black text-white border-r-2 border-black 
+        flex flex-col min-h-screen h-screen
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+        lg:translate-x-0
+      `}>
+        {/* Logo — desktop only (mobile has its own header) */}
+        <div className="hidden lg:flex px-8 py-8 border-b-2 border-white/20 items-center gap-3">
+          <Link href="/dashboard" className="text-lg font-black uppercase tracking-[0.2em] flex items-center gap-3">
+            <div className="w-8 h-8 bg-white text-black flex items-center justify-center text-sm font-black">G</div>
+            Admin
+          </Link>
         </div>
-        
-        <div className="space-y-4">
-          <div className="divider opacity-30"></div>
-          <li>
-            <form action="/auth/signout" method="post">
-              <button 
-                type="submit" 
-                className="flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl font-medium text-error/80 hover:text-error hover:bg-error/10 transition-colors"
+
+        {/* Close button — mobile only */}
+        <div className="lg:hidden flex justify-end px-4 pt-4">
+          <button onClick={() => setIsOpen(false)} className="w-10 h-10 flex items-center justify-center">
+            <FaTimes className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 py-6 lg:py-8 px-4 space-y-1 overflow-y-auto">
+          <p className="text-[9px] font-black uppercase tracking-[0.4em] px-4 mb-6">Navigation</p>
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href));
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={handleNavClick}
+                className={`flex items-center gap-4 px-4 py-3.5 text-sm font-black uppercase tracking-[0.1em] transition-all ${isActive
+                    ? "bg-white text-black"
+                    : "hover:bg-white hover:text-black"
+                  }`}
               >
-                <FaSignOutAlt className="w-5 h-5 opacity-70" /> 
-                Sign Out
-              </button>
-            </form>
-          </li>
+                <Icon className="w-4 h-4" />
+                {link.name}
+              </Link>
+            );
+          })}
+
+          <div className="pt-8">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] px-4 mb-6">External</p>
+            <Link
+              href="/"
+              target="_blank"
+              className="flex items-center gap-4 px-4 py-3.5 text-sm font-bold uppercase tracking-[0.1em] hover:bg-white hover:text-black transition-all"
+            >
+              <FaExternalLinkAlt className="w-3.5 h-3.5" />
+              Portfolio
+            </Link>
+          </div>
+        </nav>
+
+        {/* User Info & Sign Out */}
+        <div className="border-t-2 border-white/20 p-6 space-y-6">
+          <div className="flex items-center gap-3">
+            <FaUserCircle className="text-xl flex-shrink-0" />
+            <span className="text-[10px] font-bold tracking-[0.1em] uppercase truncate">{userEmail}</span>
+          </div>
+          <form action="/auth/signout" method="post">
+            <button type="submit" className="w-full flex items-center justify-center gap-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] py-3 hover:bg-black hover:text-white border-2 border-white transition-all">
+              <FaSignOutAlt />
+              Sign Out
+            </button>
+          </form>
         </div>
-      </ul>
-    </div>
+      </aside>
+    </>
   );
 }

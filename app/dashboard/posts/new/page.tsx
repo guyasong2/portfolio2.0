@@ -7,7 +7,7 @@ export default async function NewPostPage() {
   const { data: categories } = await supabase.from("categories").select("id, name");
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="w-full">
       <PostEditor 
         categories={categories || []} 
         onSubmitAction={async (data, blocks) => {

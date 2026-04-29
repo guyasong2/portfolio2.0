@@ -1,18 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import PostCard from "@/components/blog/PostCard";
+import Link from "next/link";
 
-// Revalidate every 60 seconds for ISR
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Blog | Guy Asong",
-  description: "Thoughts, tutorials, and insights on web development, cybersecurity, and tech.",
-  openGraph: {
-    title: "Blog | Guy Asong",
-    description: "Thoughts, tutorials, and insights on web development, cybersecurity, and tech.",
-    url: "https://guyasong.me/blog",
-    type: "website",
-  },
+  title: "Blog",
+  description: "Technical writeups, security research, and tutorials.",
 };
 
 export default async function BlogPage() {
@@ -31,37 +25,62 @@ export default async function BlogPage() {
   const regularPosts = posts?.filter(p => !p.featured) || [];
 
   return (
-    <div className="space-y-16">
-      <header className="space-y-4 pt-8 border-b border-base-300/50 pb-8">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Blog</h1>
-        <p className="text-lg text-base-content/70 max-w-2xl">
-          Thoughts, tutorials, and insights on web development, cybersecurity, and tech.
-        </p>
-      </header>
-
-      {featuredPosts.length > 0 && (
-        <section className="space-y-8">
-          <h2 className="text-2xl font-semibold">Featured</h2>
-          <div className="grid gap-6 md:gap-8 md:grid-cols-2">
-            {featuredPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+    <div className="min-h-screen">
+      {/* Header — black */}
+      <div className="bg-black text-white py-32 px-8 lg:px-16">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.3em] mb-6">Archive</p>
+              <h1 className="text-[clamp(3rem,7vw,7rem)] font-black tracking-[-0.04em] uppercase leading-none">
+                Blog
+              </h1>
+            </div>
+            <Link
+              href="/api/rss"
+              className="text-[10px] font-black uppercase tracking-[0.2em] border-2 border-white px-6 py-3 hover:bg-white hover:text-black transition-all"
+            >
+              RSS Feed
+            </Link>
           </div>
-        </section>
-      )}
+        </div>
+      </div>
 
-      <section className="space-y-8">
-        <h2 className="text-2xl font-semibold">Latest Posts</h2>
-        {(!regularPosts || regularPosts.length === 0) ? (
-          <p className="text-base-content/60">No posts published yet. Check back soon!</p>
-        ) : (
-          <div className="grid gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-3 auto-rows-fr">
-            {regularPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
+      {/* Content — white */}
+      <div className="max-w-[1400px] mx-auto px-8 lg:px-16 py-24 space-y-24">
+        {featuredPosts.length > 0 && (
+          <section>
+            <div className="flex items-end gap-8 mb-12">
+              <h2 className="text-2xl font-black uppercase tracking-tight">Featured</h2>
+              <div className="h-[2px] flex-1 bg-black" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-0">
+              {featuredPosts.map((post: any) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          </section>
         )}
-      </section>
+
+        <section>
+          <div className="flex items-end gap-8 mb-12">
+            <h2 className="text-2xl font-black uppercase tracking-tight">All Posts</h2>
+            <div className="h-[2px] flex-1 bg-black" />
+          </div>
+
+          {(!regularPosts || regularPosts.length === 0) ? (
+            <div className="border-2 border-black py-32 text-center">
+              <p className="text-[11px] font-bold uppercase tracking-[0.3em]">No posts published yet.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
+              {regularPosts.map((post: any) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
