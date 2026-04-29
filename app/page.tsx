@@ -71,7 +71,7 @@ export default async function HomePage() {
               All Posts →
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredPosts.map((post: any) => (
               <PostCard key={post.id} post={post} />
             ))}
