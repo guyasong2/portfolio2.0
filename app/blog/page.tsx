@@ -73,7 +73,7 @@ export default async function BlogPage() {
               <p className="text-[11px] font-bold uppercase tracking-[0.3em]">No posts published yet.</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-black">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularPosts.map((post: any) => (
                 <PostCard key={post.id} post={post} />
               ))}
